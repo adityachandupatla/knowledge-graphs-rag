@@ -1,0 +1,15 @@
+
+Knowledge Graphs for RAG
+
+	The basic idea is to represent our knowledge base as a graph data structure with relationships between nodes.
+
+	User's queries can then be answered by doing the following:
+
+		- As pre-processing step, calculate embeddings of all nodes of the graph
+
+		- Calculate user's query embedding
+
+		- Leverage Cypher (graph SQL for Neo4j) to find relevant nodes from the graph (i.e. similarity search operation which is native to graph databases)
+
+	Now we are able to extract semantic subset of our knowledge graph based on user's query. This subset will be extremely useful context to an LLM to perfectly reason & answer user's query
+
