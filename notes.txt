@@ -13,3 +13,37 @@ Knowledge Graphs for RAG
 
 	Now we are able to extract semantic subset of our knowledge graph based on user's query. This subset will be extremely useful context to an LLM to perfectly reason & answer user's query
 
+Knowledge Graphs vs Vector Databases
+
+	The Core Distinction
+	
+	- Vector databases answer: "What text chunks are semantically similar to this query?"
+	- Knowledge graphs answer: "What entities are connected to this, and how?"
+	
+	These solve different problems.
+
+	Where Vector Search Falls Short?
+
+		Say you're querying a codebase: "What services depend on the AuthService?"
+
+		Vector search finds chunks that mention AuthService and dependencies together. But it can't reliably trace actual dependency chains—it's pattern matching on text, not traversing real relationships. A knowledge graph has explicit edges: PaymentService → DEPENDS_ON → AuthService. You query the structure directly.
+
+	Broadly, two ways to use Knowledge Graphs and Vector Databases in RAG:
+
+		Approach 1: Graph as structured retrieval (no embeddings)
+
+		- Query gets converted to Cypher: "Find all nodes connected to AuthService via DEPENDS_ON"
+		- Returns structured facts
+		- LLM uses these facts as context
+
+		Approach 2: Hybrid (what your snippet describes)
+
+		- Embed node descriptions
+		- Vector search finds starting points in the graph
+		- Then traverse relationships from those nodes
+		- Return the subgraph as context
+
+		The hybrid approach is useful when queries are fuzzy ("stuff related to authentication") but you still want relational context.
+
+	Knowledge graphs require upfront schema design and entity extraction. Vector DBs are "throw chunks in and search." For many RAG use cases, vector search is simpler and sufficient. Graphs shine when relationships are the knowledge.
+
